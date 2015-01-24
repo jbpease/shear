@@ -1,0 +1,28 @@
+SHEAR: Simple Handler for Error and Adapter Removal
+
+This program provides an integrated system to trim and filter Illumina short reads. 
+Barcode-customized adapter tags are prepared for removal by Scythe (https://github.com/vsbuffalo/scythe),
+then reads are filtered by length, quality scores, and in the case of highly repetition of sequence.
+This provides a quick, integrated, and installation-free method to reduce error in your Illumina short reads.
+You can also skip Scythe and use your own adapter trimmer, but still use SHEAR for all other trimming.
+
+AUTHORS: James B. Pease
+http://www.github.com/jbpease/shear
+
+Contents:
+shear.py  (main script)
+
+Requirements:
+Python 2.5+, or 3.x
+
+Optional, but strongly recommended: 
+Scythe (any version, https://github.com/vsbuffalo/scythe)
+
+
+Installation:
+- Install Scythe (https://github.com/vsbuffalo/scythe, *optional but strongly recommdended)
+- Download and run script.
+
+Usage:
+Full usage options can be found by running: 
+> shear.py --help
