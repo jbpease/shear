@@ -2,16 +2,17 @@
 """
 SHEAR: Simple Handler for Error and Adapter Removal
 James B. Pease
-Version Alpha 006
+Version Alpha 007
 
 VERSION HISTORY:
 
-v.003 Alpha Release
-v.004 Added support for combining multiple pairs of input files
-v.005 Major update, fixed filtered output, general clean-up, removed GC filter
-v.006 Minor fixes to default parameters
+v.0.003 Alpha Release
+v.0.004 Added support for combining multiple pairs of input files
+v.0.005 Major update, fixed filtered output, general clean-up, removed GC filter
+v.0.006 Minor fixes to default parameters
+v.0.007 Fixes to default parameters and option processing
 """
-SHEARVERSION = "Alpha 005"
+SHEARVERSION = "Alpha 0.007"
 
 import sys, argparse, os, subprocess
 from time import time
@@ -140,28 +141,20 @@ def mutual_info(seq):
             (float(monucs[dinuc[1]]) / total_monucs))))
     return mutual_information
 
-def run_scythe(fastqpath, adapters=None, out=None, **kwargs):
+def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
+               quiet=False):
     """Runs the Scythe Bayesian Trimmer"""
-    scythelog = open(kwargs.get('logfilepath', 'scythe.log'), "w")
-    quality = kwargs.get('quality', 'sanger')
-    if quality in ['illumina_1.3', 'illumina_1.5']:
-        quality = 'illumina'
-    elif quality in ['illumina_1.8']:
-        quality = 'sanger'
-    arr_cmd = [kwargs.get('execpath', 'scythe'),
-               '-a', adapters, '-q', quality,
-               '-p', str(kwargs.get('prior', 0.1)),
-               '-o', out,
-               '-n', str(kwargs.get('min_match', 5)),
-               '-M', str(kwargs.get('min_keep', 0)),
-               fastqpath]
-    if kwargs.get('verbose', True):
-        print("executing subprocess {!s}").format(' '.join(arr_cmd))
-    process = subprocess.Popen(' '.join(arr_cmd),
-                               shell=True, stderr=scythelog, stdout=scythelog)
+    cmd = "{} {} {}".format(execpath,
+                            ' '.join(["{} {}".format(k, v)
+                                      for k, v in params.items()]),
+                            fastqpath)
+    if not quiet:
+        print("executing subprocess {!s}").format(cmd)
+    process = subprocess.Popen(
+        cmd, shell=True, stderr=logfilepath, stdout=logfilepath)
     process.communicate()
     contaminated = 0
-    scythelog = open(kwargs.get('logfilepath', 'scythe.log'), 'r')
+    scythelog = open(logfilepath, 'r')
     line = scythelog.readline()
     while line:
         if line.startswith('contaminated'):
@@ -278,8 +271,6 @@ def generate_adapters(outputpath, mode='', fwd_barcodes=None,
                                                              rev_barcode)))
     return ''
 
-
-
 def main(arguments=sys.argv[1:]):
     """FASTQ Trimmer Main Function"""
     time0 = time()
@@ -308,7 +299,7 @@ def main(arguments=sys.argv[1:]):
                               "at least this length from the front or end"))
     parser.add_argument("--trimambig", action="store_true", default=True,
                         help="remove N's from both ends")
-    parser.add_argument("--filterlength", type=int, default=1,
+    parser.add_argument("--filterlength", type=int, default=30,
                         help="minimum read length")
     parser.add_argument("--filterquality", type=int, default=3,
                         help=("filter reads with pre-trimming mean quality"
@@ -328,12 +319,18 @@ def main(arguments=sys.argv[1:]):
                         help="skip scythe 3' adapter removal")
     parser.add_argument("--execscythe",
                         help="path of the scythe executable")
-    parser.add_argument("--scytheprior", type=float, default=0.1)
+    parser.add_argument("--scytheprior", type=float, default=0.1,
+                        help="""Bayesian prior for proportion of adapters
+                                expected to be smapled in Scythe
+                                (default=0.1)""")
+    parser.add_argument("--scythematch", type=int, default=5,
+                        help="""Minimum number of bases to match in Scythe
+                                (default=5)""")
     parser.add_argument("--log", help="specify log file path"
                         + "default is shear_TIMESTAMP")
     parser.add_argument("--cleanup", choices=["none", "tempfastq",
                                               "exceptadapters", "all"],
-                        default="all",
+                        default="none",
                         help=("choose which temporary files to remove ("
                               "none=keep all; "
                               "tempfastq=remove temporary fastq files"
@@ -347,8 +344,11 @@ def main(arguments=sys.argv[1:]):
                         help="directory to use for temporary files")
     parser.add_argument("--cleanheader", action="store_true",
                         help=("removes any additional terms from the"
-                             "header line (useful after STAR)"))
+                              "header line (useful after STAR)"))
+    parser.add_argument("--quiet", action="store_true",
+                        help="Suppress progress messages")
     args = parser.parse_args(args=arguments)
+
 
 #### ====== Establish Log and Temporary Directory ===========
     timestamp = timestamper()
@@ -384,9 +384,17 @@ def main(arguments=sys.argv[1:]):
         raise SyntaxError(msg)
     polynucs = []
     if args.trimambig:
-        polynucs.append(('N',1))
+        polynucs.append(('N', 1))
     if args.trimpolyat:
-        polynucs.extend([('A', args.trimpolyat), ('T',args.trimpolyat)])
+        polynucs.extend([('A', args.trimpolyat), ('T', args.trimpolyat)])
+    try:
+        args.scytheprior = float(args.scytheprior)
+    except TypeError:
+        args.scytheprior = 0.1
+    try:
+        args.scythematch = int(args.scythematch)
+    except TypeError:
+        args.scythematch = 5
 
 #### ====== Establish file paths and paired/single mode =======
     args.fq1 = [os.path.abspath(x) for x in args.fq1]
@@ -458,15 +466,19 @@ def main(arguments=sys.argv[1:]):
             logfile1 = os.path.abspath("{!s}/scythe_p1_{!s}_{!s}.log".format(
                 args.tempdir, timestamp, ndex))
             mainlog.write("Running Scythe on fq1...\n")
-            stats.p1scythe(run_scythe(fq1, adapters=adapterpath, out=tempfile1,
+            scythe_params = {'-a': adapterpath,
+                             '-q': code_p1,
+                             '-p': args.scytheprior,
+                             '-n': args.scythematch,
+                             '-o': tempfile1}
+            stats.p1scythe(run_scythe(fq1, scythe_params, logfilepath=logfile1,
                                       execpath=args.execscythe,
-                                      logfilepath=logfile1,
-                                      quality=code_p1, min_keep=0,
-                                      prior=args.scytheprior))
+                                      quiet=args.quiet))
             mainlog.write("Scythe on fq1 complete. {!s}"
                           " reads with adapters removed.\n"
                           "Scythe fq1 completed at: {!s} seconds.\n".format(
-                              stats.stats['scythe'][0], round(time() - time0, 2)))
+                              stats.stats['scythe'][0],
+                              round(time() - time0, 2)))
 ######## ===== Scythe Adapter Trimming on Pair 2 ===================
         if paired_end and not args.skipscythe:
             tempfile2 = os.path.abspath("{!s}/scythetemp_p2_{!s}_{!s}"
@@ -475,11 +487,14 @@ def main(arguments=sys.argv[1:]):
             logfile2 = os.path.abspath("{!s}/scythe_p2_{!s}_{!s}.log".format(
                 args.tempdir, timestamp, ndex))
             mainlog.write("Running Scythe on fq2...\n")
-            stats.p2scythe(run_scythe(fq2, adapters=adapterpath, out=tempfile2,
+            scythe_params = {'-a': adapterpath,
+                             '-q': code_p2,
+                             '-p': args.scytheprior,
+                             '-n': args.scythematch,
+                             '-o': tempfile2}
+            stats.p2scythe(run_scythe(fq2, scythe_params, logfilepath=logfile2,
                                       execpath=args.execscythe,
-                                      logfilepath=logfile2,
-                                      quality=code_p2, min_keep=0,
-                                      prior=args.scytheprior))
+                                      quiet=args.quiet))
             mainlog.write("Scythe on fq2 complete. {!s} reads with adapters"
                           "removed.\nScythe fq1 completed at"
                           " {!s} seconds.".format(stats.stats['scythe'][2],
@@ -527,8 +542,8 @@ def main(arguments=sys.argv[1:]):
                 if line1_seq.count('N') > args.filterambig:
                     read1_removed = 'ambig'
             if not read1_removed and args.filterquality:
-                if sum([ord(x) - qual_offset for x in line1_qual
-                        ])/(len_read1) < args.filterquality:
+                if sum([ord(x) - qual_offset for x in line1_qual])/(
+                        len_read1) < args.filterquality:
                     read1_removed = 'totalqual'
             if not read1_removed and args.filterlowinfo:
                 mutinfo = mutual_info(line1_seq)
@@ -562,8 +577,9 @@ def main(arguments=sys.argv[1:]):
                     mutinfo = mutual_info(line2_seq)
                     if mutinfo >= args.filterlowinfo:
                         read2_removed = 'lowinfo'
-            if read2_removed and (not read1_removed and args.filterunpaired):
-                read1_removed = 'unpaired'
+            if read2_removed and args.filteredunpaired and paired_end:
+                if not read1_removed:
+                    read1_removed = 'unpaired'
 ############### ============ Read1 trimming from 3' end ===============
             if not read1_removed:
                 coord_end1 = len_read1 - trimfixed[1] - 1
@@ -661,10 +677,12 @@ def main(arguments=sys.argv[1:]):
                 if not read2_removed and (coord_end2 - coord_start2
                                           < args.filterlength):
                     read2_removed = 'tooshort'
-            if read1_removed and (not read2_removed and args.filterunpaired):
-                read2_removed = 'unpaired'
-            if read2_removed and (not read1_removed and args.filterunpaired):
-                read1_removed = 'unpaired'
+            if read1_removed and args.filterunpaired and paired_end:
+                if not read2_removed:
+                    read2_removed = 'unpaired'
+            if read2_removed and args.filterunpaired and paired_end:
+                if not read1_removed:
+                    read1_removed = 'unpaired'
             if not read1_removed:
                 outfq1.write("{!s}\n{!s}\n+\n{!s}\n".format(
                     line1_header,
@@ -711,12 +729,15 @@ def main(arguments=sys.argv[1:]):
 #### ==== Optional File Cleanup ======
     if args.cleanup != "none":
         os.remove(tempfile1)
-        os.remove(tempfile2)
+        if paired_end:
+            os.remove(tempfile2)
         if args.cleanup != "tempfastq":
             os.remove(logfile1)
-            os.remove(logfile2)
+            if paired_end:
+                os.remove(logfile2)
             if args.cleanup != "exceptadapters":
-                os.remove(adapterpath)
+                if not args.skipscythe:
+                    os.remove(adapterpath)
 #### ===== Finish log and close ====
     mainlog.write("\nTotal running time: {!s} seconds.\n".format(
         round(time() - time0, 2)))
