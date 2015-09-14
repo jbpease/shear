@@ -1,43 +1,63 @@
- # -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 SHEAR: Simple Handler for Error and Adapter Removal
-James B. Pease
-Version Alpha 007
+http://www.github.com/jbpease/shear
+@author: James B. Pease
 
-VERSION HISTORY:
+version 0.003 Alpha Release
+version 0.004 Added support for combining multiple pairs of input files
+version 0.005 Major update, fixed filtered output, clean-up, rem GC filter
+version 0.006 Minor fixes to default parameters
+version 0.007 Fixes to default parameters and option processing
+@version 2015-09-13 - Fixes for Python3 compatbility , add gzip capability
 
-v.0.003 Alpha Release
-v.0.004 Added support for combining multiple pairs of input files
-v.0.005 Major update, fixed filtered output, general clean-up, removed GC filter
-v.0.006 Minor fixes to default parameters
-v.0.007 Fixes to default parameters and option processing
+This file is part of SHEAR.
+
+SHEAR is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SHEAR is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SHEAR.  If not, see <http://www.gnu.org/licenses/>.
 """
-SHEARVERSION = "Alpha 0.007"
 
-import sys, argparse, os, subprocess
+import sys
+import os
+import argparse
+import subprocess
+import gzip
 from time import time
 from datetime import datetime
 from math import log
 
+SHEARVERSION = "2015-09-13"
+
 STAT_STRING = ("""
-original reads:\t{!s}
-original bases:\t{!s}
-reads with adapters removed:\t{!s}
-reads partially trimmed for quality:\t{!s}\t{!s}
-bases trimmed for quality:\t{!s}\t{!s}
-reads filtered for length:\t{!s}\t{!s}
-bases filtered for length:\t{!s}\t{!s}
-reads filtered for low avg quality:\t{!s}\t{!s}
-bases filtered for low avg quality:\t{!s}\t{!s}
-reads filtered for ambiguity:\t{!s}\t{!s}
-bases filtered for ambiguity:\t{!s}\t{!s}
-reads filtered for low info:\t{!s}\t{!s}
-bases filtered for low info:\t{!s}\t{!s}
-reads filtered because unpaired:\t{!s}\t{!s}
-bases filtered because unpaired:\t{!s}\t{!s}
-reads removed:\t{!s}\t{!s}
-reads trimmed:\t{!s}\t{!s}
-bases removed:\t{!s}\t{!s}""")
+original reads:\t{}
+original bases:\t{}
+reads with adapters removed:\t{}
+reads partially trimmed for quality:\t{}\t{}
+bases trimmed for quality:\t{}\t{}
+reads filtered for length:\t{}\t{}
+bases filtered for length:\t{}\t{}
+reads filtered for low avg quality:\t{}\t{}
+bases filtered for low avg quality:\t{}\t{}
+reads filtered for ambiguity:\t{}\t{}
+bases filtered for ambiguity:\t{}\t{}
+reads filtered for low info:\t{}\t{}
+bases filtered for low info:\t{}\t{}
+reads filtered because unpaired:\t{}\t{}
+bases filtered because unpaired:\t{}\t{}
+reads removed:\t{}\t{}
+reads trimmed:\t{}\t{}
+bases removed:\t{}\t{}""")
 
 
 class TrimStat(object):
@@ -100,9 +120,16 @@ class TrimStat(object):
                                       self.stats['total'][j], ndigits)])
         return STAT_STRING.format(*xlist)
 
+
 def timestamper():
     """Returns dash-separated timestamp string"""
-    return datetime.now().strftime('%Y_%m_%d_%H_%M_%S_%f')
+    return datetime.now().strftime('%Y-%m-%d-%H-%M-%S-%f')
+
+
+def gopen(path, mode):
+    """Automatically invokes gzip file opening when path ends with .gz"""
+    return path.endswith('.gz') and gzip.open(path, mode) or open(path, mode)
+
 
 def zdiv(num, den, ndigits=-1):
     """Calculate a fraction, but avoid zero denominator errors"""
@@ -114,10 +141,12 @@ def zdiv(num, den, ndigits=-1):
             num = round(num, ndigits)
         return num
 
+
 def complement(seq):
     """Make complement of DNA sequence"""
     seq = seq[::-1].lower().replace('a', 'T')
     return seq.replace('t', 'A').replace('g', 'C').replace('c', 'G')
+
 
 def mutual_info(seq):
     """Calculate a simple dinucleotide mutual information score"""
@@ -125,7 +154,7 @@ def mutual_info(seq):
         return 0.0
     dinucs = {}
     monucs = {}
-    for j in xrange(len(seq) - 1):
+    for j in range(len(seq) - 1):
         dinucs[seq[j:j+2]] = dinucs.get(seq[j:j+2], 0) + 1
         monucs[seq[j]] = monucs.get(seq[j], 0) + 1
     monucs[seq[-1]] = monucs.get(seq[-1], 0) + 1
@@ -141,6 +170,7 @@ def mutual_info(seq):
             (float(monucs[dinuc[1]]) / total_monucs))))
     return mutual_information
 
+
 def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
                quiet=False):
     """Runs the Scythe Bayesian Trimmer"""
@@ -149,12 +179,12 @@ def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
                                       for k, v in params.items()]),
                             fastqpath)
     if not quiet:
-        print("executing subprocess {!s}").format(cmd)
+        print("executing subprocess {}").format(cmd)
     process = subprocess.Popen(
         cmd, shell=True, stderr=logfilepath, stdout=logfilepath)
     process.communicate()
     contaminated = 0
-    scythelog = open(logfilepath, 'r')
+    scythelog = gopen(logfilepath, 'rb')
     line = scythelog.readline()
     while line:
         if line.startswith('contaminated'):
@@ -164,16 +194,17 @@ def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
     scythelog.close()
     return contaminated
 
+
 def detect_fastq_format(filepath, ntest=1000000):
     """Determine FASTQ Format"""
     i = 0
-    with open(filepath) as fastqfile:
+    with gopen(filepath, 'rb') as fastqfile:
         code = ''
         while code in ['', 'phred33', 'phred64'] and i < ntest:
             i += 1
-            fastqfile.readline() #Skip Header
+            fastqfile.readline()  # Skip Header
             bases = fastqfile.readline()
-            fastqfile.readline() #Skip spacer
+            fastqfile.readline()  # Skip spacer
             quals = fastqfile.readline()
             bases = bases.rstrip()
             if code == 'phred33':
@@ -213,6 +244,7 @@ def detect_fastq_format(filepath, ntest=1000000):
         code = "sanger"
     return code
 
+
 def generate_adapters(outputpath, mode='', fwd_barcodes=None,
                       rev_barcodes=None):
     """Generate Adapter File for use with Scythe"""
@@ -246,30 +278,31 @@ def generate_adapters(outputpath, mode='', fwd_barcodes=None,
                       "TGTGTGTAGATCTCGGTGGTCGCCGTATCATTAAAAA"),
                      ("TTTTTAATGATACGGCGACCACCGAGAT"
                       "CTACACACACTCTTTCCCTACACGACGCTCTTCCGATCT")]
-    with open(outputpath, 'w') as outfile:
+    with gopen(outputpath, 'wb') as outfile:
         for k, fwd_barcode in enumerate(fwd_barcodes):
             fwd_comp = complement(fwd_barcode)
-            outfile.write((">TruSeq_fwd_adapter_{!s}\n{!s}\n"
-                           ">TruSeq_fwd_adapter_alt_{!s}\n{!s}\n"
-                           ">TruSeq_fwd_adapter_comp_{!s}\n{!s}\n"
-                          ).format(k+1, fwd_adapt[0].replace('[barcode]',
-                                                             fwd_barcode),
-                                   k+1, fwd_adapt[1].replace('[barcode]',
-                                                             fwd_barcode),
-                                   k+1, fwd_adapt[2].replace('[barcode]',
-                                                             fwd_comp)))
+            outfile.write((">TruSeq_fwd_adapter_{}\n{}\n"
+                           ">TruSeq_fwd_adapter_alt_{}\n{}\n"
+                           ">TruSeq_fwd_adapter_comp_{}\n{}\n"
+                           ).format(k+1, fwd_adapt[0].replace('[barcode]',
+                                                              fwd_barcode),
+                                    k+1, fwd_adapt[1].replace('[barcode]',
+                                                              fwd_barcode),
+                                    k+1, fwd_adapt[2].replace('[barcode]',
+                                                              fwd_comp)))
         for k, rev_barcode in enumerate(rev_barcodes):
             rev_comp = complement(rev_barcode)
-            outfile.write((">TruSeq_rev_adapter_{!s}\n{!s}\n"
-                           ">TruSeq_rev_adapter_alt_{!s}\n{!s}\n"
-                           ">TruSeq_rev_adapter_comp_{!s}\n{!s}\n"
-                          ).format(k+1, rev_adapt[0].replace('[barcode]',
-                                                             rev_comp),
-                                   k+1, rev_adapt[1].replace('[barcode]',
-                                                             rev_comp),
-                                   k+1, rev_adapt[2].replace('[barcode]',
-                                                             rev_barcode)))
+            outfile.write((">TruSeq_rev_adapter_{}\n{}\n"
+                           ">TruSeq_rev_adapter_alt_{}\n{}\n"
+                           ">TruSeq_rev_adapter_comp_{}\n{}\n"
+                           ).format(k+1, rev_adapt[0].replace('[barcode]',
+                                                              rev_comp),
+                                    k+1, rev_adapt[1].replace('[barcode]',
+                                                              rev_comp),
+                                    k+1, rev_adapt[2].replace('[barcode]',
+                                                              rev_barcode)))
     return ''
+
 
 def main(arguments=sys.argv[1:]):
     """FASTQ Trimmer Main Function"""
@@ -289,8 +322,8 @@ def main(arguments=sys.argv[1:]):
     parser.add_argument("--trimfixed", default="0:0",
                         help="remove fixed number of bases from the FRONT:END")
     parser.add_argument("--trimqual", default="20:20",
-                        help=("remove bases below this quality score the"
-                              + " FRONT:END"))
+                        help=("""remove bases below this quality score the"
+                                 FRONT:END"""))
     parser.add_argument("--trimqualpad", default="0:0",
                         help=("removing this many extra bases next to a "
                               "low-quality base from FRONT:END"))
@@ -326,8 +359,8 @@ def main(arguments=sys.argv[1:]):
     parser.add_argument("--scythematch", type=int, default=5,
                         help="""Minimum number of bases to match in Scythe
                                 (default=5)""")
-    parser.add_argument("--log", help="specify log file path"
-                        + "default is shear_TIMESTAMP")
+    parser.add_argument("--log", help="""specify log file path
+                        default is shear_TIMESTAMP""")
     parser.add_argument("--cleanup", choices=["none", "tempfastq",
                                               "exceptadapters", "all"],
                         default="none",
@@ -348,9 +381,7 @@ def main(arguments=sys.argv[1:]):
     parser.add_argument("--quiet", action="store_true",
                         help="Suppress progress messages")
     args = parser.parse_args(args=arguments)
-
-
-#### ====== Establish Log and Temporary Directory ===========
+    # ===== Establish Log and Temporary Directory =====
     timestamp = timestamper()
     if not args.tempdir:
         args.tempdir = '.'
@@ -360,11 +391,11 @@ def main(arguments=sys.argv[1:]):
     if not args.log:
         args.log = "shear_" + timestamp + ".log"
     args.log = os.path.abspath(args.log)
-    mainlog = open(args.log, 'w')
-    mainlog.write("shear version={!s}\n{!s}\n".format(SHEARVERSION,
-                                                      " ".join(sys.argv)))
+    mainlog = gopen(args.log, 'wb')
+    mainlog.write("shear version={}\n{}\n".format(SHEARVERSION,
+                                                  " ".join(sys.argv)))
 
-#### ====== Additional Argument Checks ============
+    # ===== Additional Argument Checks =====
     try:
         trimfixed = tuple([int(x) for x in args.trimfixed.split(':')][0:2])
     except:
@@ -396,13 +427,13 @@ def main(arguments=sys.argv[1:]):
     except TypeError:
         args.scythematch = 5
 
-#### ====== Establish file paths and paired/single mode =======
+    # ===== Establish file paths and paired/single mode =====
     args.fq1 = [os.path.abspath(x) for x in args.fq1]
     args.out1 = os.path.abspath(args.out1)
-    outfq1 = open(args.out1, 'w')
+    outfq1 = gopen(args.out1, 'wb')
     if args.filterfile:
-        filterfq1 = open(os.path.abspath("{!s}_p1.fastq".format(
-            args.filterfile)), 'w')
+        filterfq1 = gopen(os.path.abspath("{}_p1.fastq".format(
+            args.filterfile)), 'wb')
     paired_end = False
     if args.fq2:
         args.fq2 = [os.path.abspath(x) for x in args.fq2]
@@ -413,28 +444,28 @@ def main(arguments=sys.argv[1:]):
             raise RuntimeError(msg)
         args.out2 = os.path.abspath(args.out2)
         if args.filterfile:
-            filterfq2 = open(os.path.abspath("{!s}_p2.fastq".format(
-                args.filterfile)), 'w')
-        outfq2 = open(args.out2, 'w')
+            filterfq2 = gopen(os.path.abspath("{}_p2.fastq".format(
+                args.filterfile)), 'wb')
+        outfq2 = gopen(args.out2, 'wb')
         input_fq = zip(args.fq1, args.fq2)
     else:
         input_fq = zip(args.fq1, ['']*len(args.fq1))
-#### ===== Establish stats container ==========
+    # ===== Establish stats container =====
     stats = TrimStat()
-#### ==== Scythe Adapter Preparation =======
+    # ===== Scythe Adapter Preparation =====
     if args.skipscythe:
         mainlog.write("Skipping Scythe...\n")
     else:
-        mainlog.write("Using temporary working directory: {!s}\n".format(
+        mainlog.write("Using temporary working directory: {}\n".format(
             args.tempdir))
-        adapterpath = "{!s}/scythe_adapters_{!s}.fasta".format(args.tempdir,
-                                                               timestamp)
+        adapterpath = "{}/scythe_adapters_{}.fasta".format(args.tempdir,
+                                                           timestamp)
         generate_adapters(adapterpath, mode=args.platform,
                           fwd_barcodes=args.barcodes1,
                           rev_barcodes=args.barcodes2)
-        mainlog.write("Adapters written to: {!s}".format(adapterpath))
+        mainlog.write("Adapters written to: {}".format(adapterpath))
 
-#### ======= BEGIN ITERATION =============
+    # ===== BEGIN ITERATION =====
     ndex = 0
     for (fq1, fq2) in input_fq:
         code_p1 = detect_fastq_format(fq1,)
@@ -443,7 +474,7 @@ def main(arguments=sys.argv[1:]):
             mainlog.write(msg + "\n")
             raise RuntimeError(msg)
         else:
-            mainlog.write("fq1 quality scale detected: {!s}\n".format(code_p1))
+            mainlog.write("fq1 quality scale detected: {}\n".format(code_p1))
         if paired_end:
             code_p2 = detect_fastq_format(fq2)
             if not code_p2:
@@ -451,19 +482,19 @@ def main(arguments=sys.argv[1:]):
                 mainlog.write(msg + "\n")
                 raise RuntimeError(msg)
             else:
-                mainlog.write("fq2 quality scale detected: {!s}\n".format(
+                mainlog.write("fq2 quality scale detected: {}\n".format(
                     code_p2))
             if code_p1 != code_p2:
                 msg = ("fq1 and fq2 quality score scales do not match "
-                       "({!s}, {!s})").format(code_p1, code_p2)
+                       "({}, {})").format(code_p1, code_p2)
                 mainlog.write(msg + "\n")
                 raise RuntimeError(msg)
-######## ==== Scythe Adapter Trimming on Pair 1 =======
+        # ===== Scythe Adapter Trimming on Pair 1 =====
         if not args.skipscythe:
-            tempfile1 = os.path.abspath("{!s}/scythetemp_p1_{!s}_{!s}"
+            tempfile1 = os.path.abspath("{}/scythetemp_p1_{}_{}"
                                         ".fastq".format(
                                             args.tempdir, timestamp, ndex))
-            logfile1 = os.path.abspath("{!s}/scythe_p1_{!s}_{!s}.log".format(
+            logfile1 = os.path.abspath("{}/scythe_p1_{}_{}.log".format(
                 args.tempdir, timestamp, ndex))
             mainlog.write("Running Scythe on fq1...\n")
             scythe_params = {'-a': adapterpath,
@@ -474,17 +505,17 @@ def main(arguments=sys.argv[1:]):
             stats.p1scythe(run_scythe(fq1, scythe_params, logfilepath=logfile1,
                                       execpath=args.execscythe,
                                       quiet=args.quiet))
-            mainlog.write("Scythe on fq1 complete. {!s}"
+            mainlog.write("Scythe on fq1 complete. {}"
                           " reads with adapters removed.\n"
-                          "Scythe fq1 completed at: {!s} seconds.\n".format(
+                          "Scythe fq1 completed at: {} seconds.\n".format(
                               stats.stats['scythe'][0],
                               round(time() - time0, 2)))
-######## ===== Scythe Adapter Trimming on Pair 2 ===================
+        # ===== Scythe Adapter Trimming on Pair 2 =====
         if paired_end and not args.skipscythe:
-            tempfile2 = os.path.abspath("{!s}/scythetemp_p2_{!s}_{!s}"
+            tempfile2 = os.path.abspath("{}/scythetemp_p2_{}_{}"
                                         ".fastq".format(
                                             args.tempdir, timestamp, ndex))
-            logfile2 = os.path.abspath("{!s}/scythe_p2_{!s}_{!s}.log".format(
+            logfile2 = os.path.abspath("{}/scythe_p2_{}_{}.log".format(
                 args.tempdir, timestamp, ndex))
             mainlog.write("Running Scythe on fq2...\n")
             scythe_params = {'-a': adapterpath,
@@ -495,36 +526,36 @@ def main(arguments=sys.argv[1:]):
             stats.p2scythe(run_scythe(fq2, scythe_params, logfilepath=logfile2,
                                       execpath=args.execscythe,
                                       quiet=args.quiet))
-            mainlog.write("Scythe on fq2 complete. {!s} reads with adapters"
+            mainlog.write("Scythe on fq2 complete. {} reads with adapters"
                           "removed.\nScythe fq1 completed at"
-                          " {!s} seconds.".format(stats.stats['scythe'][2],
-                                                  round(time() - time0, 2)))
-######## ===== Quality Trimming Setup ========================
+                          " {} seconds.".format(stats.stats['scythe'][2],
+                                                round(time() - time0, 2)))
+        # ===== Quality Trimming Setup =====
         lowq_front = set([])
         lowq_end = set([])
         qual_offset = 32
         if code_p1 in ['solexa', 'illumina_1.3', 'illumina_1.5']:
             qual_offset = 64
         if trimqual[0]:
-            lowq_front = set([chr(x) for x in range(qual_offset,
-                                                    qual_offset + trimqual[0])])
+            lowq_front = set([chr(x) for x in range(
+                qual_offset, qual_offset + trimqual[0])])
         if trimqual[1]:
             lowq_end = set([chr(x) for x in range(qual_offset,
                                                   qual_offset + trimqual[1])])
-######## ====== Open Files and Establish Trimming Counters =================
+        # ===== Open Files and Establish Trimming Counters =====
         if args.skipscythe:
-            infq1 = open(fq1, 'r')
+            infq1 = gopen(fq1, 'rb')
         else:
-            infq1 = open(tempfile1, 'r')
+            infq1 = gopen(tempfile1, 'rb')
         if paired_end:
             if args.skipscythe:
-                infq2 = open(fq2, 'r')
+                infq2 = gopen(fq2, 'rb')
             else:
-                infq2 = open(tempfile2, 'r')
+                infq2 = gopen(tempfile2, 'rb')
         while 1:
             read1_removed = ''
             read2_removed = ''
-############ Read1 Filtering =============================================
+            # ===== Read1 Filtering =====
             line1_header = infq1.readline().rstrip()
             line1_seq = infq1.readline().rstrip()
             infq1.readline()
@@ -549,7 +580,7 @@ def main(arguments=sys.argv[1:]):
                 mutinfo = mutual_info(line1_seq)
                 if mutinfo >= args.filterlowinfo:
                     read1_removed = 'lowinfo'
-############ Read2 Filtering ============================================
+            # ===== Read2 Filtering =====
             if paired_end:
                 line2_header = infq2.readline().rstrip()
                 line2_seq = infq2.readline().rstrip()
@@ -580,7 +611,7 @@ def main(arguments=sys.argv[1:]):
             if read2_removed and args.filteredunpaired and paired_end:
                 if not read1_removed:
                     read1_removed = 'unpaired'
-############### ============ Read1 trimming from 3' end ===============
+            # ===== Read1 trimming from 3' end =====
             if not read1_removed:
                 coord_end1 = len_read1 - trimfixed[1] - 1
                 if args.trimpattern3:
@@ -604,7 +635,7 @@ def main(arguments=sys.argv[1:]):
                                                coord_end1:-1]) & lowq_end):
                             break
                     coord_end1 -= 1
-################ Read1 trimming for 5' end ===============================
+                # ===== Read1 trimming for 5' end =====
                 coord_start1 = trimfixed[0] + 0
                 for nuc, num in polynucs:
                     if line1_seq.startswith(nuc * num):
@@ -619,14 +650,13 @@ def main(arguments=sys.argv[1:]):
                         read1_removed = 'totalqual'
                         break
                     if line1_qual[coord_start1] not in lowq_front:
-                        if not (lowq_front & set(line1_qual[coord_start1:
-                                                            coord_start1
-                                                            + trimqualpad[0]])):
+                        if not (lowq_front & set(line1_qual[
+                                coord_start1:coord_start1 + trimqualpad[0]])):
                             break
                     coord_start1 += 1
                 if coord_end1 - coord_start1 < args.filterlength:
                     read1_removed = 'totalqual'
-############ Read2 trimming of 3' end=============================
+            # ===== Read2 trimming of 3' end =====
             if not read2_removed and paired_end:
                 coord_end2 = len_read2 - trimfixed[1] - 1
                 if args.trimpattern3:
@@ -653,7 +683,7 @@ def main(arguments=sys.argv[1:]):
                                                coord_end2])):
                             break
                     coord_end2 -= 1
-################ Read2 trimming of 5' end ====================================
+                # ===== Read2 trimming of 5' end =====
                 coord_start2 = trimfixed[0] + 0
                 for nuc, num in polynucs:
                     if line2_seq.startswith(nuc * num):
@@ -668,14 +698,13 @@ def main(arguments=sys.argv[1:]):
                         read2_removed = 'totalqual'
                         break
                     if line2_qual[coord_start2] not in lowq_front:
-                        if not (lowq_front & set(line2_qual[coord_start2:
-                                                            coord_start2
-                                                            + trimqualpad[0]])):
+                        if not (lowq_front & set(line2_qual[
+                                coord_start2: coord_start2 + trimqualpad[0]])):
                             break
                     coord_start2 += 1
 
-                if not read2_removed and (coord_end2 - coord_start2
-                                          < args.filterlength):
+                if not read2_removed and (
+                        coord_end2 - coord_start2 < args.filterlength):
                     read2_removed = 'tooshort'
             if read1_removed and args.filterunpaired and paired_end:
                 if not read2_removed:
@@ -684,7 +713,7 @@ def main(arguments=sys.argv[1:]):
                 if not read1_removed:
                     read1_removed = 'unpaired'
             if not read1_removed:
-                outfq1.write("{!s}\n{!s}\n+\n{!s}\n".format(
+                outfq1.write("{}\n{}\n+\n{}\n".format(
                     line1_header,
                     line1_seq[coord_start1:coord_end1 + 1],
                     line1_qual[coord_start1:coord_end1 + 1]))
@@ -694,16 +723,17 @@ def main(arguments=sys.argv[1:]):
             else:
                 stats.p1add(read1_removed, len_read1)
                 if args.filterfile:
-                    filterfq1.write("{!s}_{!s}\n{!s}\n+\n{!s}\n".format(
+                    filterfq1.write("{}_{}\n{}\n+\n{}\n".format(
                         line1_header, read1_removed, line1_seq, line1_qual))
             if paired_end:
                 if read2_removed:
                     stats.p2add(read2_removed, len_read2)
                     if args.filterfile:
-                        filterfq2.write("{!s}_{!s}\n{!s}\n+\n{!s}\n".format(
-                            line2_header, read2_removed, line2_seq, line2_qual))
+                        filterfq2.write("{}_{}\n{}\n+\n{}\n".format(
+                            line2_header, read2_removed,
+                            line2_seq, line2_qual))
                 else:
-                    outfq2.write("{!s}\n{!s}\n+\n{!s}\n".format(
+                    outfq2.write("{}\n{}\n+\n{}\n".format(
                         line2_header,
                         line2_seq[coord_start2:coord_end2 + 1],
                         line2_qual[coord_start2:coord_end2 + 1]))
@@ -715,7 +745,7 @@ def main(arguments=sys.argv[1:]):
         if paired_end:
             infq2.close()
         ndex += 1
-######## FINISH ITERATION
+    # FINISH ITERATION
     outfq1.close()
     if args.filterfile:
         filterfq1.close()
@@ -723,10 +753,10 @@ def main(arguments=sys.argv[1:]):
         outfq2.close()
         if args.filterfile:
             filterfq2.close()
-#### ===== Write Statistics =======
-    mainlog.write("\nfq1_stats\n{!s}\n\nfq2 stats\n{!s}\n".format(
+    # ===== Write Statistics =====
+    mainlog.write("\nfq1_stats\n{}\n\nfq2 stats\n{}\n".format(
         stats.stat_list(pair1=True), stats.stat_list(pair2=True)))
-#### ==== Optional File Cleanup ======
+    # ===== Optional File Cleanup =====
     if args.cleanup != "none":
         os.remove(tempfile1)
         if paired_end:
@@ -738,8 +768,8 @@ def main(arguments=sys.argv[1:]):
             if args.cleanup != "exceptadapters":
                 if not args.skipscythe:
                     os.remove(adapterpath)
-#### ===== Finish log and close ====
-    mainlog.write("\nTotal running time: {!s} seconds.\n".format(
+    # ===== Finish log and close =====
+    mainlog.write("\nTotal running time: {} seconds.\n".format(
         round(time() - time0, 2)))
     mainlog.close()
     return ''
