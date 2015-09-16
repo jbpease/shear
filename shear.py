@@ -174,15 +174,17 @@ def mutual_info(seq):
 def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
                quiet=False):
     """Runs the Scythe Bayesian Trimmer"""
+    logx = open(logfilepath, 'w')
     cmd = "{} {} {}".format(execpath,
                             ' '.join(["{} {}".format(k, v)
                                       for k, v in params.items()]),
                             fastqpath)
     if not quiet:
-        print("executing subprocess {}").format(cmd)
+        print("executing subprocess \"{}\"").format(cmd)
     process = subprocess.Popen(
-        cmd, shell=True, stderr=logfilepath, stdout=logfilepath)
+        cmd, stdout=logx, stderr=subprocess.STDOUT, shell=True)
     process.communicate()
+    logx.close()
     contaminated = 0
     scythelog = gopen(logfilepath, 'rb')
     line = scythelog.readline()
@@ -312,6 +314,12 @@ def main(arguments=sys.argv[1:]):
     parser.add_argument("--fq2", nargs='*')
     parser.add_argument("--out1", required=True)
     parser.add_argument("--out2")
+    parser.add_argument("--code1", choices=[
+                            'sanger', 'illumina', 'phred', 'solexa'],
+                        help="manually set quality scale")
+    parser.add_argument("--code2", choices=[
+                            'sanger', 'illumina', 'phred', 'solexa'],
+                        help="manually set quality scale")
     parser.add_argument("--platform", choices=['TruSeq', 'TruSeqDualIndex'],
                         default='TruSeq', help="Sequencing Platform")
     parser.add_argument("--barcodes1", nargs='*',
@@ -426,13 +434,17 @@ def main(arguments=sys.argv[1:]):
         args.scythematch = int(args.scythematch)
     except TypeError:
         args.scythematch = 5
-
+    if not args.skipscythe and any(
+            x.endswith('.gz') for x in args.fq1 + args.fq2):
+        msg = "If Scythe is used inputs cannot be GZIPed"
+        mainlog.write(msg + "\n")
+        raise SyntaxError(msg)
     # ===== Establish file paths and paired/single mode =====
     args.fq1 = [os.path.abspath(x) for x in args.fq1]
     args.out1 = os.path.abspath(args.out1)
     outfq1 = gopen(args.out1, 'wb')
     if args.filterfile:
-        filterfq1 = gopen(os.path.abspath("{}_p1.fastq".format(
+        filterfq1 = gopen(os.path.abspath("{}_1.fastq".format(
             args.filterfile)), 'wb')
     paired_end = False
     if args.fq2:
@@ -444,7 +456,7 @@ def main(arguments=sys.argv[1:]):
             raise RuntimeError(msg)
         args.out2 = os.path.abspath(args.out2)
         if args.filterfile:
-            filterfq2 = gopen(os.path.abspath("{}_p2.fastq".format(
+            filterfq2 = gopen(os.path.abspath("{}_2.fastq".format(
                 args.filterfile)), 'wb')
         outfq2 = gopen(args.out2, 'wb')
         input_fq = zip(args.fq1, args.fq2)
@@ -468,7 +480,7 @@ def main(arguments=sys.argv[1:]):
     # ===== BEGIN ITERATION =====
     ndex = 0
     for (fq1, fq2) in input_fq:
-        code_p1 = detect_fastq_format(fq1,)
+        code_p1 = args.code1 or detect_fastq_format(fq1,)
         if not code_p1:
             msg = "fq1 quality score scale cannot be determined"
             mainlog.write(msg + "\n")
@@ -476,7 +488,7 @@ def main(arguments=sys.argv[1:]):
         else:
             mainlog.write("fq1 quality scale detected: {}\n".format(code_p1))
         if paired_end:
-            code_p2 = detect_fastq_format(fq2)
+            code_p2 = args.code2 or detect_fastq_format(fq2)
             if not code_p2:
                 msg = "fq2 quality score scale cannot be determined"
                 mainlog.write(msg + "\n")
