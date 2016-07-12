@@ -242,7 +242,7 @@ def detect_fastq_format(filepath, ntest=1000000):
             bases = bases.rstrip()
     if code == 'phred64':
         code = "illumina_1.5"
-    elif code == 'phread33':
+    elif code == 'phred33':
         code = "sanger"
     return code
 
