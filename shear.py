@@ -620,7 +620,7 @@ def main(arguments=sys.argv[1:]):
                     mutinfo = mutual_info(line2_seq)
                     if mutinfo >= args.filterlowinfo:
                         read2_removed = 'lowinfo'
-            if read2_removed and args.filteredunpaired and paired_end:
+            if read2_removed and args.filterunpaired and paired_end:
                 if not read1_removed:
                     read1_removed = 'unpaired'
             # ===== Read1 trimming from 3' end =====
@@ -714,7 +714,6 @@ def main(arguments=sys.argv[1:]):
                                 coord_start2: coord_start2 + trimqualpad[0]])):
                             break
                     coord_start2 += 1
-
                 if not read2_removed and (
                         coord_end2 - coord_start2 < args.filterlength):
                     read2_removed = 'tooshort'
@@ -785,6 +784,7 @@ def main(arguments=sys.argv[1:]):
         round(time() - time0, 2)))
     mainlog.close()
     return ''
+
 
 if __name__ == "__main__":
     main()
