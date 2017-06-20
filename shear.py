@@ -252,7 +252,11 @@ def detect_fastq_format(filepath, ntest=200000):
                 break
             bases = bases.rstrip()
     if code == 'phred64':
+<<<<<<< HEAD
         code = "illumina"
+=======
+        code = "illumina_1.5"
+>>>>>>> c4cfd4d33dc10c01251f3ff9cb5aef80b2c8b43b
     elif code == 'phred33':
         code = "sanger"
     return code
@@ -663,9 +667,14 @@ def main(arguments=None):
                     mutinfo = mutual_info(line2_seq)
                     if mutinfo >= args.filter_low_info:
                         read2_removed = 'lowinfo'
+<<<<<<< HEAD
             if (read2_removed is not False and
                     args.filter_unpaired is True and paired_end is True):
                 if read1_removed is not False:
+=======
+            if read2_removed and args.filterunpaired and paired_end:
+                if not read1_removed:
+>>>>>>> c4cfd4d33dc10c01251f3ff9cb5aef80b2c8b43b
                     read1_removed = 'unpaired'
             # ===== Read1 trimming from 3' end =====
             if read1_removed is False:
@@ -756,9 +765,14 @@ def main(arguments=None):
                                 coord_start2: coord_start2 + trimqualpad[0]])):
                             break
                     coord_start2 += 1
+<<<<<<< HEAD
 
                 if read2_removed is False and (
                         coord_end2 - coord_start2 < args.filter_length):
+=======
+                if not read2_removed and (
+                        coord_end2 - coord_start2 < args.filterlength):
+>>>>>>> c4cfd4d33dc10c01251f3ff9cb5aef80b2c8b43b
                     read2_removed = 'tooshort'
             if read1_removed is not False and (
                     args.filter_unpaired is True and paired_end is True):
