@@ -9,55 +9,63 @@
 \contentsline {subsection}{\numberline {1.5.1}Paired-end}{2}{subsection.1.5.1}
 \contentsline {subsection}{\numberline {1.5.2}Single-read}{2}{subsection.1.5.2}
 \contentsline {subsection}{\numberline {1.5.3}Config file alternative}{2}{subsection.1.5.3}
-\contentsline {chapter}{\numberline {2}Program Parameter Descriptions}{3}{chapter.2}
-\contentsline {section}{\numberline {2.1}adapt}{3}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Description}{3}{subsection.2.1.1}
-\contentsline {subsection}{\numberline {2.1.2}Parameters}{3}{subsection.2.1.2}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-h/-{-}help}}{3}{subsubsection*.3}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq1} (required)}{3}{subsubsection*.4}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-o/-{-}out} (required)}{3}{subsubsection*.5}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq2}}{3}{subsubsection*.6}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-k/-{-}end-klength}}{3}{subsubsection*.7}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-m/-{-}mode}}{4}{subsubsection*.8}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}quiet}}{4}{subsubsection*.9}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-M/-{-}min-match}}{4}{subsubsection*.10}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-N/-{-}number-of-reads}}{4}{subsubsection*.11}
-\contentsline {section}{\numberline {2.2}shear}{4}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Description}{4}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Parameters}{4}{subsection.2.2.2}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-h/-{-}help}}{4}{subsubsection*.12}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq1} (required)}{4}{subsubsection*.13}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}out1} (required)}{5}{subsubsection*.14}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-a/-{-}adapters}}{5}{subsubsection*.15}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}clean-header}}{5}{subsubsection*.16}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-f/-{-}trim-fixed}}{5}{subsubsection*.17}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}filt1}}{5}{subsubsection*.18}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}filt2}}{5}{subsubsection*.19}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq2}}{5}{subsubsection*.20}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-k/-{-}adapter-end-klength}}{5}{subsubsection*.21}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}log-path}}{6}{subsubsection*.22}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-m/-{-}adapter-mode}}{6}{subsubsection*.23}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-n/-{-}retain-ambig}}{6}{subsubsection*.24}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}out2}}{6}{subsubsection*.25}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-p/-{-}trim-poly}}{6}{subsubsection*.26}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-q/-{-}trim-qual}}{6}{subsubsection*.27}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}quality-scale}}{6}{subsubsection*.28}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}quiet}}{6}{subsubsection*.29}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}retain-temp}}{7}{subsubsection*.30}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-s/-{-}scythe-prior}}{7}{subsubsection*.31}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}scythe-match}}{7}{subsubsection*.32}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}scythe-skip}}{7}{subsubsection*.33}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-t/-{-}platform}}{7}{subsubsection*.34}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}temp-dir}}{7}{subsubsection*.35}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}trim-qual-pad}}{7}{subsubsection*.36}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-y/-{-}trim-pattern-5}}{7}{subsubsection*.37}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-z/-{-}trim-pattern-3}}{8}{subsubsection*.38}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-A/-{-}filter-ambig}}{8}{subsubsection*.39}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-I/-{-}filter-low-info}}{8}{subsubsection*.40}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-L/-{-}filter-length}}{8}{subsubsection*.41}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-M/-{-}adapter-min-match}}{8}{subsubsection*.42}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-N/-{-}adapter-number-of-reads}}{8}{subsubsection*.43}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-Q/-{-}filter-quality}}{8}{subsubsection*.44}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-U/-{-}filter-unpaired}}{8}{subsubsection*.45}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-X/-{-}scythe-executable}}{9}{subsubsection*.46}
-\contentsline {chapter}{\numberline {3}Indices and tables}{11}{chapter.3}
+\contentsline {section}{\numberline {1.6}Version History}{2}{section.1.6}
+\contentsline {subsection}{\numberline {1.6.1}v. 2017-06-20}{2}{subsection.1.6.1}
+\contentsline {subsection}{\numberline {1.6.2}v. 2015-09-13}{2}{subsection.1.6.2}
+\contentsline {subsection}{\numberline {1.6.3}v. 0.007}{2}{subsection.1.6.3}
+\contentsline {subsection}{\numberline {1.6.4}v. 0.006}{3}{subsection.1.6.4}
+\contentsline {subsection}{\numberline {1.6.5}v. 0.005}{3}{subsection.1.6.5}
+\contentsline {subsection}{\numberline {1.6.6}v. 0.004}{3}{subsection.1.6.6}
+\contentsline {subsection}{\numberline {1.6.7}v. 0.003}{3}{subsection.1.6.7}
+\contentsline {chapter}{\numberline {2}Program Parameter Descriptions}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}adapt}{5}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Description}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Parameters}{5}{subsection.2.1.2}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-h/-{-}help}}{5}{subsubsection*.3}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq1} (required)}{5}{subsubsection*.4}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-o/-{-}out} (required)}{5}{subsubsection*.5}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq2}}{5}{subsubsection*.6}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-k/-{-}end-klength}}{5}{subsubsection*.7}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-m/-{-}mode}}{6}{subsubsection*.8}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}quiet}}{6}{subsubsection*.9}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-M/-{-}min-match}}{6}{subsubsection*.10}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-N/-{-}number-of-reads}}{6}{subsubsection*.11}
+\contentsline {section}{\numberline {2.2}shear}{6}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Description}{6}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Parameters}{6}{subsection.2.2.2}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-h/-{-}help}}{6}{subsubsection*.12}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq1} (required)}{6}{subsubsection*.13}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}out1} (required)}{7}{subsubsection*.14}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-a/-{-}adapters}}{7}{subsubsection*.15}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}clean-header}}{7}{subsubsection*.16}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-f/-{-}trim-fixed}}{7}{subsubsection*.17}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}filt1}}{7}{subsubsection*.18}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}filt2}}{7}{subsubsection*.19}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}fq2}}{7}{subsubsection*.20}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-k/-{-}adapter-end-klength}}{7}{subsubsection*.21}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}log-path}}{8}{subsubsection*.22}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-m/-{-}adapter-mode}}{8}{subsubsection*.23}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-n/-{-}retain-ambig}}{8}{subsubsection*.24}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}out2}}{8}{subsubsection*.25}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-p/-{-}trim-poly}}{8}{subsubsection*.26}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-q/-{-}trim-qual}}{8}{subsubsection*.27}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}quality-scale}}{8}{subsubsection*.28}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}quiet}}{8}{subsubsection*.29}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}retain-temp}}{9}{subsubsection*.30}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-s/-{-}scythe-prior}}{9}{subsubsection*.31}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}scythe-match}}{9}{subsubsection*.32}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}scythe-skip}}{9}{subsubsection*.33}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-t/-{-}platform}}{9}{subsubsection*.34}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}temp-dir}}{9}{subsubsection*.35}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}trim-qual-pad}}{9}{subsubsection*.36}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-y/-{-}trim-pattern-5}}{9}{subsubsection*.37}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-z/-{-}trim-pattern-3}}{10}{subsubsection*.38}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-A/-{-}filter-ambig}}{10}{subsubsection*.39}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-I/-{-}filter-low-info}}{10}{subsubsection*.40}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-L/-{-}filter-length}}{10}{subsubsection*.41}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-M/-{-}adapter-min-match}}{10}{subsubsection*.42}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-N/-{-}adapter-number-of-reads}}{10}{subsubsection*.43}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-Q/-{-}filter-quality}}{10}{subsubsection*.44}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-U/-{-}filter-unpaired}}{10}{subsubsection*.45}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-X/-{-}scythe-executable}}{11}{subsubsection*.46}
+\contentsline {chapter}{\numberline {3}Indices and tables}{13}{chapter.3}

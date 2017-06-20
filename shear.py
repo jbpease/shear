@@ -40,6 +40,7 @@ You should have received a copy of the GNU General Public License
 along with SHEAR.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+_VERSION = "2017-06-20"
 
 STAT_STRING = ("""
 original reads:\t{}
@@ -73,12 +74,16 @@ class TrimStat(object):
 
     def p1add(self, statname, value):
         """Add values to p1 stats"""
+        if statname is False:
+            return ''
         self.stats[statname][0] += 1
         self.stats[statname][1] += value
         return ''
 
     def p2add(self, statname, value):
         """Add values tp p2 stats"""
+        if statname is False:
+            return ''
         self.stats[statname][2] += 1
         self.stats[statname][3] += value
         return ''
@@ -191,14 +196,15 @@ def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
                             ' '.join(["{} {}".format(k, v)
                                       for k, v in params.items()]),
                             fastqpath)
+    print(cmd)
     if quiet is False:
-        print("executing subprocess \"{}\"").format(cmd)
+        print("executing subprocess \"{}\"".format(cmd))
     process = subprocess.Popen(
         cmd, stdout=logx, stderr=subprocess.STDOUT, shell=True)
     process.communicate()
     logx.close()
     contaminated = 0
-    scythelog = gopen(logfilepath, 'rb')
+    scythelog = gopen(logfilepath, 'rt')
     line = scythelog.readline()
     while line:
         if line.startswith('contaminated'):
@@ -209,7 +215,7 @@ def run_scythe(fastqpath, params, execpath='scythe', logfilepath='scythe.log',
     return contaminated
 
 
-def detect_fastq_format(filepath, ntest=100000):
+def detect_fastq_format(filepath, ntest=200000):
     """Determine FASTQ Format"""
     i = 0
     with gopen(filepath, 'rt') as fastqfile:
@@ -222,28 +228,21 @@ def detect_fastq_format(filepath, ntest=100000):
             quals = fastqfile.readline()
             bases = bases.rstrip()
             if code == 'phred33':
-                if 'J' in quals:
-                    code = "illumina_1.8"
-                elif any(x in quals for x in '!"'):
-                    code = "sanger"
+                code = "sanger"
             elif code == 'phred64':
                 if any(x in quals for x in ';<=>?'):
                     code = "solexa"
                 elif any(x in quals for x in '@"'):
-                    code = 'illumina13'
+                    code = 'illumina'
             else:
                 if any(x in quals for x in '!"#$%&\'()*+,-./0123456789:'):
-                    code = 'phred33'
-                    if 'J' in quals:
-                        code = "illumina_1.8"
-                    elif any(x in quals for x in '!"'):
-                        code = "sanger"
+                    code = "phred33"
                 elif any(x in quals for x in 'KLMNOPQRSTUVWXYZ[]^_`abcdefgh'):
                     code = 'phred64'
                     if any(x in quals for x in ';<=>?'):
                         code = "solexa"
                     elif any(x in quals for x in '@"'):
-                        code = 'illumina13'
+                        code = 'illumina'
         while i < ntest:
             fastqfile.readline()
             bases = fastqfile.readline()
@@ -253,8 +252,8 @@ def detect_fastq_format(filepath, ntest=100000):
                 break
             bases = bases.rstrip()
     if code == 'phred64':
-        code = "illumina_1.5"
-    elif code == 'phread33':
+        code = "illumina"
+    elif code == 'phred33':
         code = "sanger"
     return code
 
@@ -381,7 +380,8 @@ def generate_argparser():
     parser.add_argument("-k", "--adapter-end-klength", type=int, default=16,
                         help=("(Adapter finding) Length of end kmer "
                               "to tabulate for possible adapter matches."))
-    parser.add_argument("-M", "--adapter-min-match", type=int, default=0.0001,
+    parser.add_argument("-M", "--adapter-min-match", type=float,
+                        default=0.0001,
                         help=("(Adapter finding) "
                               "Minimum proportion of read match required to "
                               "report the kmer as a possible match."))
@@ -410,7 +410,7 @@ def generate_argparser():
                               "determined, but use this to set manually."))
     parser.add_argument("--quiet", action="store_true",
                         help="Suppress progress messages")
-    parser.add_argument("--version", action="version", version="2017-06-20",
+    parser.add_argument("--version", action="version", version=_VERSION,
                         help="Display software version")
     return parser
 
@@ -429,12 +429,12 @@ def main(arguments=None):
 
     # ===== Establish Log and Temporary Directory =====
     timestamp = timestamper()
-    if not os.path.exists(args.tempdir):
-        os.mkdir(args.tempdir)
+    if not os.path.exists(args.temp_dir):
+        os.mkdir(args.temp_dir)
     if args.log_path is None:
         args.log_path = os.path.abspath("shear_" + timestamp + ".log")
-    mainlog = gopen(args.log_path, 'wb')
-    mainlog.write("shear version={}\n{}\n".format(args.version,
+    mainlog = gopen(args.log_path, 'wt')
+    mainlog.write("shear version={}\n{}\n".format(_VERSION,
                                                   " ".join(sys.argv)))
     # ===== Additional Argument Checks =====
     trimfixed = colon_sep_check(args.trim_fixed, "--trim-fixed")
@@ -455,23 +455,22 @@ def main(arguments=None):
         mainlog.write(msg + "\n")
         raise SyntaxError(msg)
     # Adapter file setup
-    if args.adapters is not None:
+    if args.adapters is None:
         args.adapters = tuple([None] * len(args.fq1))
     elif len(args.adapters) == 1:
         args.adapters = tuple([args.adapters[0]] * len(args.fq1))
     elif len(args.adapters) != len(args.fq1):
-        raise RuntimeError("--adapters must either contain "
-                           "one file, or a number of files the same as "
-                           "--fq1")
-    msg = "If Scythe is used inputs cannot be GZIPed"
-    mainlog.write(msg + "\n")
-    raise SyntaxError(msg)
+        msg = ("--adapters must either contain "
+               "one file, or a number of files the same as "
+               "--fq1")
+        mainlog.write(msg + "\n")
+        raise SyntaxError(msg)
     # ===== Establish file paths and paired/single mode =====
     args.fq1 = [os.path.abspath(x) for x in args.fq1]
     args.out1 = os.path.abspath(args.out1)
-    outfq1 = gopen(args.out1, 'wb')
+    outfq1 = gopen(args.out1, 'wt')
     filterfq1 = gopen(os.path.abspath("{}_filtered_1.fastq".format(
-        args.filt1 if args.filt1 is not None else args.out1)), 'wb')
+        args.filt1 if args.filt1 is not None else args.out1)), 'wt')
     paired_end = False
     if args.fq2:
         paired_end = True
@@ -481,12 +480,12 @@ def main(arguments=None):
             raise RuntimeError(msg)
         args.out2 = os.path.abspath(args.out2)
         filterfq2 = gopen(os.path.abspath("{}_filtered_2.fastq".format(
-            args.filt2 if args.filt2 is not None else args.out2)), 'wb')
-        outfq2 = gopen(args.out2, 'wb')
-        input_fq = zip(args.fq1, args.fq2, args.adapters[0], args.adapters[1])
+            args.filt2 if args.filt2 is not None else args.out2)), 'wt')
+        outfq2 = gopen(args.out2, 'wt')
+        input_fq = zip(args.fq1, args.fq2, args.adapters)
     else:
         input_fq = zip(args.fq1, ['']*len(args.fq1),
-                       args.adapters[0], args.adapters[1])
+                       args.adapters[0])
     # ===== Establish stats container =====
     stats = TrimStat()
     # ===== Scythe Adapter Preparation =====
@@ -500,7 +499,7 @@ def main(arguments=None):
     ndex = 0
     adapterfiles = []
     for (fq1, fq2, adapterfp) in input_fq:
-        if args.skip_scythe is False:
+        if args.scythe_skip is False:
             if adapterfp is None:
                 adapterfp = os.path.join(
                     args.temp_dir,
@@ -599,14 +598,14 @@ def main(arguments=None):
                                                   qual_offset + trimqual[1])])
         # ===== Open Files and Establish Trimming Counters =====
         if args.scythe_skip is True:
-            infq1 = gopen(fq1, 'rb')
+            infq1 = gopen(fq1, 'r')
         else:
-            infq1 = gopen(tempfile1, 'rb')
+            infq1 = gopen(tempfile1, 'r')
         if paired_end is True:
             if args.scythe_skip is True:
-                infq2 = gopen(fq2, 'rb')
+                infq2 = gopen(fq2, 'r')
             else:
-                infq2 = gopen(tempfile2, 'rb')
+                infq2 = gopen(tempfile2, 'r')
         while 1:
             read1_removed = False
             read2_removed = False
@@ -665,7 +664,7 @@ def main(arguments=None):
                     if mutinfo >= args.filter_low_info:
                         read2_removed = 'lowinfo'
             if (read2_removed is not False and
-                    args.filtered_unpaired is True and paired_end is True):
+                    args.filter_unpaired is True and paired_end is True):
                 if read1_removed is not False:
                     read1_removed = 'unpaired'
             # ===== Read1 trimming from 3' end =====

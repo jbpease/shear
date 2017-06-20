@@ -216,7 +216,7 @@ def generate_argparser():
     parser.add_argument("-k", "--end-klength", type=int, default=16,
                         help=("Length of end kmer to tabulate for possible "
                               "adapter matches."))
-    parser.add_argument("-M", "--min-match", type=int, default=0.0001,
+    parser.add_argument("-M", "--min-match", type=float, default=0.0001,
                         help=("Minimum proportion of read match required to "
                               "report the kmer as a possible match."))
     parser.add_argument("--quiet", action="store_true",
@@ -304,8 +304,12 @@ def main(arguments=None):
                 if val >= args.min_match:
                     print("Min matches met, added to output.")
                     adapter_entries.append(entry)
+    final_entries = []
+    for entry in adapter_entries:
+        if not any(entry in x for x in adapter_entries if x != entry):
+            final_entries.append(entry)
     with open(args.out, 'w') as outfile:
-        for i, entry in enumerate(adapter_entries):
+        for i, entry in enumerate(final_entries):
             outfile.write(">ADAPTER{}\n{}\n".format(i + 1, entry))
     return ''
 

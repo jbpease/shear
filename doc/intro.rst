@@ -71,4 +71,39 @@ Alternatively to a full set of command line arguments you can enter a single pos
   --out1 FASTQ.sheared.p1.fq 
   --out2 FASTQ.sheared.p2.fq 
 
+Version History
+===============
 
+v. 2017-06-20
+-------------
+Major upgrade, fixed issues with compatibility with Scythe, 
+added automatic adapter finding with adapt.py, 
+included new manual and documentation with Sphinx.  
+WARNING: program options have changed significantly to
+be more conventional and consistent in format. Please be 
+advised that old commands will need to be updated in terms
+of flag names.
+
+v. 2015-09-13 
+--------------
+Fixes for Python3 compatbility , add gzip capability
+
+v. 0.007
+--------
+Fixes to default parameters and option processing
+
+v. 0.006
+---------
+Minor fixes to default parameters
+
+v. 0.005 
+--------
+Major update, fixed filtered output, clean-up, removed GC content filter
+
+v. 0.004
+--------
+Added support for combining multiple pairs of input files
+
+v. 0.003
+--------
+Alpha Release

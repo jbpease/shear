@@ -1,33 +1,36 @@
 # SHEAR: Simple Handler for Error and Adapter Removal
 
-This program provides an integrated system to trim and filter Illumina short reads. 
-Barcode-customized adapter tags are prepared for removal by Scythe (https://github.com/vsbuffalo/scythe),
-then reads are filtered by length, quality scores, and in the case of highly repetition of sequence.
-This provides a quick, integrated, and installation-free method to reduce error in your Illumina short reads.
-You can also skip Scythe and use your own adapter trimmer, but still use SHEAR for all other trimming.
+## What is SHEAR?
 
-## Key features:
+This program removes adapters, trims, and quality-filters Illumina short reads. 
+The program first will automatically find adapters sequences in your reads and remove them using Scythe (https://github.com/vsbuffalo/scythe), then reads are filtered by length, quality scores, and in the case of highly repetition of sequence. This provides a quick, integrated, and installation-free method to reduce error in your Illumina short reads. You can also skip Scythe and use your own adapter trimmer, but still use SHEAR for all other trimming.
+
+## Key features
+
 * Simultaneous pair trimming and discarding of orphaned reads (i.e. the other pair of a filtered read). 
 * Poly-A and Poly-T tail trimming (good for RNA-Seq)
 * Removes dinucleotide repeat reads.
-* Automatically builds your adapter sequences with custom barcodes from your samples.
+* Automatically finds adapter sequences from your samples.
 
-##AUTHORS: James B. Pease
+## Manual
+See the SHEAR manual here: (https://github.com/jbpease/shear/blob/master/shear.pdf)
 
-##Contents:
-shear.py  (main script)
+## Authors
 
-##Requirements:
-Python 2.5+, or 3.x
+James B. Pease
+https://www.peaselab.github.io
 
-**Optional, but strongly recommended: **
+## Requirements
+
+Python 3.x (recommend) or 2.7.x
+
+**Optional, but strongly recommended:**
+
 Scythe (any version, https://github.com/vsbuffalo/scythe)
 
-##Installation:
-+ Install Scythe ([https://github.com/vsbuffalo/scythe](https://github.com/vsbuffalo/scythe), *optional but strongly recommdended*)
-+ Download and run script.
+## License
+This file is part of shear.
 
-##Usage:
-Full usage options can be found by running: 
-`> shear.py --help`
+shear is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as publihed by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
+shear is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with Foobar. If not, see (http://www.gnu.org/licenses/).

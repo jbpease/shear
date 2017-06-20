@@ -55,7 +55,7 @@
 
 
 \chapter{Getting Started}
-\label{\detokenize{intro:getting-started}}\label{\detokenize{intro:welcome-to-shear-s-documentation}}\label{\detokenize{intro::doc}}\label{\detokenize{intro:intro}}
+\label{\detokenize{intro:welcome-to-shear-s-documentation}}\label{\detokenize{intro:getting-started}}\label{\detokenize{intro:intro}}\label{\detokenize{intro::doc}}
 
 \section{What is SHEAR?}
 \label{\detokenize{intro:what-is-shear}}
@@ -137,6 +137,50 @@ Alternatively to a full set of command line arguments you can enter a single pos
 \end{quote}
 
 
+\section{Version History}
+\label{\detokenize{intro:version-history}}
+
+\subsection{v. 2017-06-20}
+\label{\detokenize{intro:v-2017-06-20}}
+Major upgrade, fixed issues with compatibility with Scythe,
+added automatic adapter finding with adapt.py,
+included new manual and documentation with Sphinx.
+WARNING: program options have changed significantly to
+be more conventional and consistent in format. Please be
+advised that old commands will need to be updated in terms
+of flag names.
+
+
+\subsection{v. 2015-09-13}
+\label{\detokenize{intro:v-2015-09-13}}
+Fixes for Python3 compatbility , add gzip capability
+
+
+\subsection{v. 0.007}
+\label{\detokenize{intro:v-0-007}}
+Fixes to default parameters and option processing
+
+
+\subsection{v. 0.006}
+\label{\detokenize{intro:v-0-006}}
+Minor fixes to default parameters
+
+
+\subsection{v. 0.005}
+\label{\detokenize{intro:v-0-005}}
+Major update, fixed filtered output, clean-up, removed GC content filter
+
+
+\subsection{v. 0.004}
+\label{\detokenize{intro:v-0-004}}
+Added support for combining multiple pairs of input files
+
+
+\subsection{v. 0.003}
+\label{\detokenize{intro:v-0-003}}
+Alpha Release
+
+
 \chapter{Program Parameter Descriptions}
 \label{\detokenize{prog_desc:program-parameter-descriptions}}\label{\detokenize{prog_desc::doc}}
 
@@ -207,7 +251,7 @@ and generates an adapter file for use with SHEAR/Scythe.
 \label{\detokenize{prog_desc:m-min-match}}
 \sphinxstylestrong{Description:} Minimum proportion of read match required to report the kmer as a possible match.
 
-\sphinxstylestrong{Type:} integer; \sphinxstylestrong{Default:} 0.0001
+\sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} 0.0001
 
 
 \subsubsection{\sphinxstyleliteralintitle{-N/-{-}number-of-reads}}
@@ -454,7 +498,7 @@ removal of paired end sequence files.
 \label{\detokenize{prog_desc:m-adapter-min-match}}
 \sphinxstylestrong{Description:} (Adapter finding) Minimum proportion of read match required to report the kmer as a possible match.
 
-\sphinxstylestrong{Type:} integer; \sphinxstylestrong{Default:} 0.0001
+\sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} 0.0001
 
 
 \subsubsection{\sphinxstyleliteralintitle{-N/-{-}adapter-number-of-reads}}

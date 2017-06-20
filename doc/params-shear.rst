@@ -295,7 +295,7 @@ Parameters
 
 **Description:** (Adapter finding) Minimum proportion of read match required to report the kmer as a possible match.
 
-**Type:** integer; **Default:** 0.0001
+**Type:** float; **Default:** 0.0001
 
 
 
