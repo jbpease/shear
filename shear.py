@@ -780,7 +780,7 @@ def main(arguments=None):
                 filterfq1.write("{}_{}\n{}\n+\n{}\n".format(
                     line1_header, read1_removed, line1_seq, line1_qual))
             if paired_end is True:
-                if read2_removed is False:
+                if read2_removed is not False:
                     stats.p2add(read2_removed, len_read2)
                     filterfq2.write("{}_{}\n{}\n+\n{}\n".format(
                         line2_header, read2_removed,
