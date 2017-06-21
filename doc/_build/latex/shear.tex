@@ -55,7 +55,7 @@
 
 
 \chapter{Getting Started}
-\label{\detokenize{intro:intro}}\label{\detokenize{intro:getting-started}}\label{\detokenize{intro:welcome-to-shear-s-documentation}}\label{\detokenize{intro::doc}}
+\label{\detokenize{intro:getting-started}}\label{\detokenize{intro:intro}}\label{\detokenize{intro::doc}}\label{\detokenize{intro:welcome-to-shear-s-documentation}}
 
 \section{What is SHEAR?}
 \label{\detokenize{intro:what-is-shear}}
@@ -182,7 +182,7 @@ Alpha Release
 
 
 \chapter{Program Parameter Descriptions}
-\label{\detokenize{prog_desc:program-parameter-descriptions}}\label{\detokenize{prog_desc::doc}}
+\label{\detokenize{prog_desc::doc}}\label{\detokenize{prog_desc:program-parameter-descriptions}}
 
 \section{adapt}
 \label{\detokenize{prog_desc:adapt}}
@@ -247,11 +247,18 @@ and generates an adapter file for use with SHEAR/Scythe.
 \sphinxstylestrong{Type:} boolean flag
 
 
-\subsubsection{\sphinxstyleliteralintitle{-M/-{-}min-match}}
-\label{\detokenize{prog_desc:m-min-match}}
-\sphinxstylestrong{Description:} Minimum proportion of read match required to report the kmer as a possible match.
+\subsubsection{\sphinxstyleliteralintitle{-E/-{-}end-min-match}}
+\label{\detokenize{prog_desc:e-end-min-match}}
+\sphinxstylestrong{Description:} Minimum proportion of read match required to report the endmer as a possible match.
 
 \sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} 0.0001
+
+
+\subsubsection{\sphinxstyleliteralintitle{-M/-{-}known-min-match}}
+\label{\detokenize{prog_desc:m-known-min-match}}
+\sphinxstylestrong{Description:} Minimum proportion of read match required to report the endmer as a possible match.Set to -1 (default) to accept all matches
+
+\sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} -1
 
 
 \subsubsection{\sphinxstyleliteralintitle{-N/-{-}number-of-reads}}
@@ -341,7 +348,7 @@ removal of paired end sequence files.
 
 \subsubsection{\sphinxstyleliteralintitle{-k/-{-}adapter-end-klength}}
 \label{\detokenize{prog_desc:k-adapter-end-klength}}
-\sphinxstylestrong{Description:} (Adapter finding) Length of end kmer to tabulate for possible adapter matches.
+\sphinxstylestrong{Description:} (Adapter finding) Length of 3’-end kmer to tabulate for possible adapter matches.
 
 \sphinxstylestrong{Type:} integer; \sphinxstylestrong{Default:} 16
 
@@ -480,6 +487,13 @@ removal of paired end sequence files.
 \sphinxstylestrong{Type:} integer; \sphinxstylestrong{Default:} 5
 
 
+\subsubsection{\sphinxstyleliteralintitle{-E/-{-}adapter-end-min-match}}
+\label{\detokenize{prog_desc:e-adapter-end-min-match}}
+\sphinxstylestrong{Description:} (Adapter finding) Minimum proportion of read matches required to report the 3’-end-mer as a possible match.
+
+\sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} 0.0001
+
+
 \subsubsection{\sphinxstyleliteralintitle{-I/-{-}filter-low-info}}
 \label{\detokenize{prog_desc:i-filter-low-info}}
 \sphinxstylestrong{Description:} Filter out reads with mutual information scores exceeding this value (ADVANCED, removes highly repetitive reads).
@@ -494,11 +508,11 @@ removal of paired end sequence files.
 \sphinxstylestrong{Type:} integer; \sphinxstylestrong{Default:} 30
 
 
-\subsubsection{\sphinxstyleliteralintitle{-M/-{-}adapter-min-match}}
-\label{\detokenize{prog_desc:m-adapter-min-match}}
-\sphinxstylestrong{Description:} (Adapter finding) Minimum proportion of read match required to report the kmer as a possible match.
+\subsubsection{\sphinxstyleliteralintitle{-M/-{-}adapter-known-min-match}}
+\label{\detokenize{prog_desc:m-adapter-known-min-match}}
+\sphinxstylestrong{Description:} (Adapter finding) Minimum proportion of read matches required to report a known contaminant as a possible match. Use -1 (default) to accept all matches.
 
-\sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} 0.0001
+\sphinxstylestrong{Type:} float; \sphinxstylestrong{Default:} -1
 
 
 \subsubsection{\sphinxstyleliteralintitle{-N/-{-}adapter-number-of-reads}}

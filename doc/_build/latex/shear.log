@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.5.10)  21 JUN 2017 01:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.5.10)  21 JUN 2017 09:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1169,29 +1169,29 @@ Underfull \hbox (badness 5050) in paragraph at lines 236--237
 dapters;endmer=search for com-mon 3'end se-
  []
 
-[6] [7] [8] [9] [10] [11] [12
-
-]
+[6] [7] [8] [9] [10] [11] [12]
 Chapter 3.
 (./shear.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 549.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 549.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 563.
+ [13
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 563.
  (./shear.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 549.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 549.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 563.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 563.
 Package rerunfilecheck Info: File `shear.out' has not changed.
 (rerunfilecheck)             Checksum: 691F4D501AA27462C6B1EE7B1C113846;1343.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 549.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 563.
  ) 
 Here is how much of TeX's memory you used:
- 13641 strings out of 493013
- 186557 string characters out of 6139317
- 290024 words of memory out of 5000000
- 16788 multiletter control sequences out of 15000+600000
+ 13645 strings out of 493013
+ 186665 string characters out of 6139317
+ 290161 words of memory out of 5000000
+ 16790 multiletter control sequences out of 15000+600000
  49567 words of font info for 81 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 37i,12n,49p,851b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,12n,49p,851b,463s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pf
@@ -1199,10 +1199,10 @@ b></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-d
 ist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/
 helvetic/uhvbo8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></
 usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on shear.pdf (17 pages, 117305 bytes).
+Output written on shear.pdf (17 pages, 117983 bytes).
 PDF statistics:
- 258 PDF objects out of 1000 (max. 8388607)
- 221 compressed objects within 3 object streams
- 88 named destinations out of 1000 (max. 500000)
+ 260 PDF objects out of 1000 (max. 8388607)
+ 223 compressed objects within 3 object streams
+ 90 named destinations out of 1000 (max. 500000)
  114 words of extra memory for PDF output out of 10000 (max. 10000000)
 

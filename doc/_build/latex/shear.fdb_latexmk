@@ -1,10 +1,10 @@
 # Fdb version 3
-["makeindex shear.idx"] 1497933448 "shear.idx" "shear.ind" "shear" 1498021766
-  "shear.idx" 1498021766 0 d41d8cd98f00b204e9800998ecf8427e ""
+["makeindex shear.idx"] 1497933448 "shear.idx" "shear.ind" "shear" 1498052981
+  "shear.idx" 1498052981 0 d41d8cd98f00b204e9800998ecf8427e ""
   (generated)
-  "shear.ind"
   "shear.ilg"
-["pdflatex"] 1498021766 "shear.tex" "shear.pdf" "shear" 1498021766
+  "shear.ind"
+["pdflatex"] 1498052981 "shear.tex" "shear.pdf" "shear" 1498052981
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1492575660 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1492575644 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1492575648 1292 3059476c50a24578715759f22652f3d0 ""
@@ -151,19 +151,19 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1494465690 7587051 2df40f2b33a63be9355ff3c31ffd6588 ""
   "footnotehyper-sphinx.sty" 1497972459 8841 e18cbb7bca599a223414f9b8a156abee ""
   "icon.png" 1498020584 5961 d5fa5f73f8c5c0f176e7e7e18f547ec2 ""
-  "shear.aux" 1498021766 15926 be100fac028c11a3c0c31bc07d094067 ""
+  "shear.aux" 1498052981 16472 4c5d15df5a01ffc08c03927ffd54b7a8 ""
   "shear.ind" 1497972459 0 d41d8cd98f00b204e9800998ecf8427e "makeindex shear.idx"
-  "shear.out" 1498021766 1343 691f4d501aa27462c6b1ee7b1c113846 ""
-  "shear.tex" 1498021765 22540 b88b9ce4f61499f6c429dc286c8e6c62 ""
-  "shear.toc" 1498021766 6398 d7a190312d002998954cee43acd67036 ""
+  "shear.out" 1498052981 1343 691f4d501aa27462c6b1ee7b1c113846 ""
+  "shear.tex" 1498052980 23301 2107d3ad21a610dfbec3ab9c4b5e3be2 ""
+  "shear.toc" 1498052981 6625 47c359ab22d3790c0cb03ef57e41e131 ""
   "sphinx.sty" 1497972459 60341 c1d8deab494ae689ffd03d6489506838 ""
-  "sphinxhighlight.sty" 1498021765 8137 38a433148fcb7611515a989ff1750dd5 ""
+  "sphinxhighlight.sty" 1498052980 8137 38a433148fcb7611515a989ff1750dd5 ""
   "sphinxmanual.cls" 1497972459 3589 0b0aac49c6f36925cf5f9d524a75a978 ""
   "sphinxmulticell.sty" 1497972459 14618 0defbdc8536ad2e67f1eac6a1431bc55 ""
   (generated)
-  "shear.out"
-  "shear.log"
-  "shear.aux"
-  "shear.pdf"
-  "shear.idx"
   "shear.toc"
+  "shear.aux"
+  "shear.log"
+  "shear.out"
+  "shear.idx"
+  "shear.pdf"

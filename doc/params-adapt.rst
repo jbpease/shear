@@ -77,12 +77,21 @@ Parameters
 
 
 
-``-M/--min-match``
-^^^^^^^^^^^^^^^^^^
+``-E/--end-min-match``
+^^^^^^^^^^^^^^^^^^^^^^
 
-**Description:** Minimum proportion of read match required to report the kmer as a possible match.
+**Description:** Minimum proportion of read match required to report the endmer as a possible match.
 
 **Type:** float; **Default:** 0.0001
+
+
+
+``-M/--known-min-match``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Description:** Minimum proportion of read match required to report the endmer as a possible match.Set to -1 (default) to accept all matches
+
+**Type:** float; **Default:** -1
 
 
 

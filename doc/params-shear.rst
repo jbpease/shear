@@ -100,7 +100,7 @@ Parameters
 ``-k/--adapter-end-klength``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Description:** (Adapter finding) Length of end kmer to tabulate for possible adapter matches.
+**Description:** (Adapter finding) Length of 3'-end kmer to tabulate for possible adapter matches.
 
 **Type:** integer; **Default:** 16
 
@@ -272,6 +272,15 @@ Parameters
 
 
 
+``-E/--adapter-end-min-match``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Description:** (Adapter finding) Minimum proportion of read matches required to report the 3'-end-mer as a possible match.
+
+**Type:** float; **Default:** 0.0001
+
+
+
 ``-I/--filter-low-info``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -290,12 +299,12 @@ Parameters
 
 
 
-``-M/--adapter-min-match``
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+``-M/--adapter-known-min-match``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Description:** (Adapter finding) Minimum proportion of read match required to report the kmer as a possible match.
+**Description:** (Adapter finding) Minimum proportion of read matches required to report a known contaminant as a possible match. Use -1 (default) to accept all matches.
 
-**Type:** float; **Default:** 0.0001
+**Type:** float; **Default:** -1
 
 
 

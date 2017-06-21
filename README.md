@@ -1,4 +1,10 @@
+![logo](https://github.com/jbpease/shear/blob/master/doc/icon.png)
+
 # SHEAR: Simple Handler for Error and Adapter Removal
+
+## Authors
+
+James B. Pease (https://www.peaselab.github.io)
 
 ## What is SHEAR?
 
@@ -15,10 +21,6 @@ The program first will automatically find adapters sequences in your reads and r
 ## Manual
 See the SHEAR manual here: (https://github.com/jbpease/shear/blob/master/shear.pdf)
 
-## Authors
-
-James B. Pease
-https://www.peaselab.github.io
 
 ## Requirements
 

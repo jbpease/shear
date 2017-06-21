@@ -378,13 +378,20 @@ def generate_argparser():
                         help=("(Adapter finding) "
                               "Number of reads to search in each fastq"))
     parser.add_argument("-k", "--adapter-end-klength", type=int, default=16,
-                        help=("(Adapter finding) Length of end kmer "
+                        help=("(Adapter finding) Length of 3'-end kmer "
                               "to tabulate for possible adapter matches."))
-    parser.add_argument("-M", "--adapter-min-match", type=float,
+    parser.add_argument("-E", "--adapter-end-min-match", type=float,
                         default=0.0001,
                         help=("(Adapter finding) "
-                              "Minimum proportion of read match required to "
-                              "report the kmer as a possible match."))
+                              "Minimum proportion of read matches required to "
+                              "report the 3'-end-mer as a possible match."))
+    parser.add_argument("-M", "--adapter-known-min-match", type=float,
+                        default=-1,
+                        help=("(Adapter finding) "
+                              "Minimum proportion of read matches required to "
+                              "report a known contaminant as a "
+                              "possible match. "
+                              "Use -1 (default) to accept all matches."))
     parser.add_argument("--log-path", type=os.path.abspath,
                         help=("Manually specify log file path, "
                               "default is 'shear_TIMESTAMP'"))
@@ -510,7 +517,8 @@ def main(arguments=None):
                     "--out", adapterfp,
                     "-m", args.adapter_mode,
                     "-N", args.adapter_number_of_reads,
-                    "-M", args.adapter_min_match,
+                    "-E", args.adapter_end_min_match,
+                    "-M", args.adapter_known_min_match,
                     "-k", args.adapter_end_klength]]
                 if paired_end:
                     makeadaptargs.extend(["--fq2", fq2])

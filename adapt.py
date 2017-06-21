@@ -216,9 +216,13 @@ def generate_argparser():
     parser.add_argument("-k", "--end-klength", type=int, default=16,
                         help=("Length of end kmer to tabulate for possible "
                               "adapter matches."))
-    parser.add_argument("-M", "--min-match", type=float, default=0.0001,
+    parser.add_argument("-E", "--end-min-match", type=float, default=0.0001,
                         help=("Minimum proportion of read match required to "
-                              "report the kmer as a possible match."))
+                              "report the endmer as a possible match."))
+    parser.add_argument("-M", "--known-min-match", type=float, default=-1,
+                        help=("Minimum proportion of read match required to "
+                              "report the endmer as a possible match."
+                              "Set to -1 (default) to accept all matches"))
     parser.add_argument("--quiet", action="store_true",
                         help="Suppress progress messages")
     parser.add_argument("--version", action="version", version="2017-06-18",
@@ -232,7 +236,8 @@ def main(arguments=None):
     # time0 = time()
     parser = generate_argparser()
     args = parser.parse_args(args=arguments)
-    args.min_match = int(args.min_match * args.number_of_reads)
+    args.end_min_match = int(args.end_min_match * args.number_of_reads)
+    args.known_min_match = int(args.known_min_match * args.number_of_reads)
     # ===== BEGIN ITERATION =====
     ndex = 0
     paired_end = False
@@ -292,7 +297,7 @@ def main(arguments=None):
             for entry, val in kadapt.found.items():
                 print("{} found {} times.".format(
                     entry, val))
-                if val >= args.min_match:
+                if args.known_min_match == -1 or val >= args.known_min_match:
                     print("Min matches met, added to output.")
                     adapter_entries.append(entry)
             for bcode in kadapt.barcodes:
@@ -301,7 +306,7 @@ def main(arguments=None):
             print("=== Possible adapters inferred from FQ{} ===".format(i))
             for entry, val in ematch.endmers.items():
                 print("{} found {} times.".format(entry, val))
-                if val >= args.min_match:
+                if val >= args.end_min_match:
                     print("Min matches met, added to output.")
                     adapter_entries.append(entry)
     final_entries = []
