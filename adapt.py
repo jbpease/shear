@@ -311,6 +311,7 @@ def main(arguments=None):
     with open(args.out, 'w') as outfile:
         for i, entry in enumerate(final_entries):
             outfile.write(">ADAPTER{}\n{}\n".format(i + 1, entry))
+            outfile.write(">ADAPTER{}R\n{}\n".format(i + 1, complement(entry)))
     return ''
 
 
