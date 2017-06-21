@@ -40,7 +40,7 @@ You should have received a copy of the GNU General Public License
 along with SHEAR.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-_VERSION = "2017-06-20"
+_VERSION = "2017-06-21"
 
 STAT_STRING = ("""
 original reads:\t{}
@@ -353,9 +353,9 @@ def generate_argparser():
                         help="Comma-separated list of specific sequences to "
                              "trim from the 3' end. Can be used for extra "
                              "stringent adapter trimming.")
-    parser.add_argument("-y", "--trim-pattern-5", nargs=1,
-                        help="Comma-separated list of specific sequences to "
-                             "trim from the 5' end. (Not recommmended).")
+#    parser.add_argument("-y", "--trim-pattern-5", nargs=1,
+#                        help="Comma-separated list of specific sequences to "
+#                             "trim from the 5' end. (Not recommmended).")
     parser.add_argument("--scythe-skip", action="store_true",
                         help="Skip scythe 3' adapter removal.")
     parser.add_argument("-X", "--scythe-executable", default="scythe",
@@ -445,6 +445,8 @@ def main(arguments=None):
                                                   " ".join(sys.argv)))
     # ===== Additional Argument Checks =====
     trimfixed = colon_sep_check(args.trim_fixed, "--trim-fixed")
+    args.trim_pattern_3 = (None if args.trim_pattern_3 is None
+                           else args.trim_pattern_3.split(','))
     trimqual = colon_sep_check(args.trim_qual, "--trim-qual")
     trimqualpad = colon_sep_check(args.trim_qual_pad, "--trim-qual-pad")
     if args.fq2 is not None:
@@ -679,7 +681,7 @@ def main(arguments=None):
             if read1_removed is False:
                 coord_end1 = len_read1 - trimfixed[1] - 1
                 if args.trim_pattern_3 is not None:
-                    for elem in args.trim_pattern_3.split(','):
+                    for elem in args.trim_pattern_3:
                         if line1_seq.endswith(elem):
                             coord_end1 = len_read1 - (
                                 max(len(elem), trimfixed[1]) - 1)

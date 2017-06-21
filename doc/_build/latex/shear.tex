@@ -55,7 +55,7 @@
 
 
 \chapter{Getting Started}
-\label{\detokenize{intro:getting-started}}\label{\detokenize{intro:intro}}\label{\detokenize{intro::doc}}\label{\detokenize{intro:welcome-to-shear-s-documentation}}
+\label{\detokenize{intro:intro}}\label{\detokenize{intro:welcome-to-shear-s-documentation}}\label{\detokenize{intro:getting-started}}\label{\detokenize{intro::doc}}
 
 \section{What is SHEAR?}
 \label{\detokenize{intro:what-is-shear}}
@@ -140,6 +140,12 @@ Alternatively to a full set of command line arguments you can enter a single pos
 \section{Version History}
 \label{\detokenize{intro:version-history}}
 
+\subsection{v. 2017-06-21}
+\label{\detokenize{intro:v-2017-06-21}}
+Important fix for \sphinxcode{-{-}trim\_pattern\_3} option. Removal of the \sphinxcode{-trim-pattern-5} option.
+Minor fixes to manual, readme and some parameters.
+
+
 \subsection{v. 2017-06-20}
 \label{\detokenize{intro:v-2017-06-20}}
 Major upgrade, fixed issues with compatibility with Scythe,
@@ -182,7 +188,7 @@ Alpha Release
 
 
 \chapter{Program Parameter Descriptions}
-\label{\detokenize{prog_desc::doc}}\label{\detokenize{prog_desc:program-parameter-descriptions}}
+\label{\detokenize{prog_desc:program-parameter-descriptions}}\label{\detokenize{prog_desc::doc}}
 
 \section{adapt}
 \label{\detokenize{prog_desc:adapt}}
@@ -464,13 +470,6 @@ removal of paired end sequence files.
 \sphinxstylestrong{Description:} Trim additional bases next to low-quality bases specified by \textendash{}trim-qual from the FRONT:END of each read.
 
 \sphinxstylestrong{Type:} None; \sphinxstylestrong{Default:} 0:0
-
-
-\subsubsection{\sphinxstyleliteralintitle{-y/-{-}trim-pattern-5}}
-\label{\detokenize{prog_desc:y-trim-pattern-5}}
-\sphinxstylestrong{Description:} Comma-separated list of specific sequences to trim from the 5’ end. (Not recommmended).
-
-\sphinxstylestrong{Type:} None; \sphinxstylestrong{Default:} None
 
 
 \subsubsection{\sphinxstyleliteralintitle{-z/-{-}trim-pattern-3}}

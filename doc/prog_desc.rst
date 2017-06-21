@@ -353,15 +353,6 @@ Parameters
 
 
 
-``-y/--trim-pattern-5``
-^^^^^^^^^^^^^^^^^^^^^^^
-
-**Description:** Comma-separated list of specific sequences to trim from the 5' end. (Not recommmended).
-
-**Type:** None; **Default:** None
-
-
-
 ``-z/--trim-pattern-3``
 ^^^^^^^^^^^^^^^^^^^^^^^
 

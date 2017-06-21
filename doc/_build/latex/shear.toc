@@ -10,13 +10,14 @@
 \contentsline {subsection}{\numberline {1.5.2}Single-read}{2}{subsection.1.5.2}
 \contentsline {subsection}{\numberline {1.5.3}Config file alternative}{2}{subsection.1.5.3}
 \contentsline {section}{\numberline {1.6}Version History}{2}{section.1.6}
-\contentsline {subsection}{\numberline {1.6.1}v. 2017-06-20}{2}{subsection.1.6.1}
-\contentsline {subsection}{\numberline {1.6.2}v. 2015-09-13}{2}{subsection.1.6.2}
-\contentsline {subsection}{\numberline {1.6.3}v. 0.007}{3}{subsection.1.6.3}
-\contentsline {subsection}{\numberline {1.6.4}v. 0.006}{3}{subsection.1.6.4}
-\contentsline {subsection}{\numberline {1.6.5}v. 0.005}{3}{subsection.1.6.5}
-\contentsline {subsection}{\numberline {1.6.6}v. 0.004}{3}{subsection.1.6.6}
-\contentsline {subsection}{\numberline {1.6.7}v. 0.003}{3}{subsection.1.6.7}
+\contentsline {subsection}{\numberline {1.6.1}v. 2017-06-21}{2}{subsection.1.6.1}
+\contentsline {subsection}{\numberline {1.6.2}v. 2017-06-20}{2}{subsection.1.6.2}
+\contentsline {subsection}{\numberline {1.6.3}v. 2015-09-13}{3}{subsection.1.6.3}
+\contentsline {subsection}{\numberline {1.6.4}v. 0.007}{3}{subsection.1.6.4}
+\contentsline {subsection}{\numberline {1.6.5}v. 0.006}{3}{subsection.1.6.5}
+\contentsline {subsection}{\numberline {1.6.6}v. 0.005}{3}{subsection.1.6.6}
+\contentsline {subsection}{\numberline {1.6.7}v. 0.004}{3}{subsection.1.6.7}
+\contentsline {subsection}{\numberline {1.6.8}v. 0.003}{3}{subsection.1.6.8}
 \contentsline {chapter}{\numberline {2}Program Parameter Descriptions}{5}{chapter.2}
 \contentsline {section}{\numberline {2.1}adapt}{5}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Description}{5}{subsection.2.1.1}
@@ -59,15 +60,14 @@
 \contentsline {subsubsection}{\sphinxstyleliteralintitle {-t/-{-}platform}}{10}{subsubsection*.35}
 \contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}temp-dir}}{10}{subsubsection*.36}
 \contentsline {subsubsection}{\sphinxstyleliteralintitle {-{-}trim-qual-pad}}{10}{subsubsection*.37}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-y/-{-}trim-pattern-5}}{10}{subsubsection*.38}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-z/-{-}trim-pattern-3}}{10}{subsubsection*.39}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-A/-{-}filter-ambig}}{10}{subsubsection*.40}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-E/-{-}adapter-end-min-match}}{11}{subsubsection*.41}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-I/-{-}filter-low-info}}{11}{subsubsection*.42}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-L/-{-}filter-length}}{11}{subsubsection*.43}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-M/-{-}adapter-known-min-match}}{11}{subsubsection*.44}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-N/-{-}adapter-number-of-reads}}{11}{subsubsection*.45}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-Q/-{-}filter-quality}}{11}{subsubsection*.46}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-U/-{-}filter-unpaired}}{11}{subsubsection*.47}
-\contentsline {subsubsection}{\sphinxstyleliteralintitle {-X/-{-}scythe-executable}}{12}{subsubsection*.48}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-z/-{-}trim-pattern-3}}{10}{subsubsection*.38}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-A/-{-}filter-ambig}}{10}{subsubsection*.39}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-E/-{-}adapter-end-min-match}}{10}{subsubsection*.40}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-I/-{-}filter-low-info}}{11}{subsubsection*.41}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-L/-{-}filter-length}}{11}{subsubsection*.42}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-M/-{-}adapter-known-min-match}}{11}{subsubsection*.43}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-N/-{-}adapter-number-of-reads}}{11}{subsubsection*.44}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-Q/-{-}filter-quality}}{11}{subsubsection*.45}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-U/-{-}filter-unpaired}}{11}{subsubsection*.46}
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {-X/-{-}scythe-executable}}{11}{subsubsection*.47}
 \contentsline {chapter}{\numberline {3}Indices and tables}{13}{chapter.3}

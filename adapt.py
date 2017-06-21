@@ -225,7 +225,7 @@ def generate_argparser():
                               "Set to -1 (default) to accept all matches"))
     parser.add_argument("--quiet", action="store_true",
                         help="Suppress progress messages")
-    parser.add_argument("--version", action="version", version="2017-06-18",
+    parser.add_argument("--version", action="version", version="2017-06-21",
                         help="Display software version")
     return parser
 

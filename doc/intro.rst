@@ -74,6 +74,11 @@ Alternatively to a full set of command line arguments you can enter a single pos
 Version History
 ===============
 
+v. 2017-06-21
+-------------
+Important fix for ``--trim_pattern_3`` option. Removal of the ``-trim-pattern-5`` option.
+Minor fixes to manual, readme and some parameters.
+
 v. 2017-06-20
 -------------
 Major upgrade, fixed issues with compatibility with Scythe, 
