@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.5.10)  20 JUN 2017 11:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Arch Linux) (preloaded format=pdflatex 2017.5.10)  21 JUN 2017 01:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -10,8 +10,8 @@ Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 Document Class: sphinxmanual 2017/03/26 v1.6 Document class (Sphinx manual)
 (/usr/share/texmf-dist/tex/latex/base/report.cls
 Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/share/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+(/usr/share/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@chapter=\count80
@@ -1050,12 +1050,12 @@ e
 * \topmargin=-37.0pt
 * \headheight=12.0pt
 * \headsep=25.0pt
-* \topskip=10.0pt
+* \topskip=11.0pt
 * \footskip=30.0pt
 * \marginparwidth=36.135pt
-* \marginparsep=11.0pt
+* \marginparsep=10.0pt
 * \columnsep=10.0pt
-* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -1084,17 +1084,28 @@ LaTeX Info: Redefining \nameref on input line 49.
 \openout5 = `shear.out'.
 
 Package hyperref Info: Option `pageanchor' set `false' on input line 52.
+ <icon.png, id=49, 72.27pt x 72.27pt>
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 52.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+File: icon.png Graphic file (type png)
+ <use icon.png>
+Package pdftex.def Info: icon.png used on input line 52.
+(pdftex.def)             Requested size: 72.2698pt x 72.2698pt.
 LaTeX Font Info:    Try loading font information for T1+phv on input line 52.
- (/usr/share/texmf-dist/tex/latex/psnfss/t1phv.fd
+
+(/usr/share/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 52.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 52.
-LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <10> not available
+LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <10.95> not available
 (Font)              Font shape `T1/phv/b/it' tried instead on input line 52.
-LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10> not available
+LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10.95> not available
 (Font)              Font shape `T1/phv/b/sl' tried instead on input line 52.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <17.28> not available
 (Font)              Font shape `T1/phv/b/it' tried instead on input line 52.
@@ -1104,8 +1115,7 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 52.
 <<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
 LaTeX Font Info:    Try loading font information for U+msa on input line 52.
-
-(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+ (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 52.
@@ -1117,13 +1127,13 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 52.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./icon.png>] [2
 
 ]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 52.
  (./shear.toc
-LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
 )
 \tf@toc=\write6
@@ -1138,20 +1148,28 @@ Chapter 1.
 LaTeX Font Info:    Try loading font information for TS1+ptm on input line 73.
 (/usr/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 91.
-
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 ) [1
 
-] [2] [3] [4
+]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[2] [3] [4
 
 ]
 Chapter 2.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/pcr/b/n' tried instead on input line 1.
-[5] [6] [7] [8] [9] [10] [11] [12
+[5]
+Underfull \hbox (badness 5050) in paragraph at lines 236--237
+\T1/ptm/b/n/10.95 Description: \T1/ptm/m/n/10.95 known=only use list of known a
+dapters;endmer=search for com-mon 3'end se-
+ []
+
+[6] [7] [8] [9] [10] [11] [12
 
 ]
 Chapter 3.
@@ -1167,24 +1185,24 @@ Package rerunfilecheck Info: File `shear.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 549.
  ) 
 Here is how much of TeX's memory you used:
- 13605 strings out of 493013
- 186065 string characters out of 6139317
- 289987 words of memory out of 5000000
- 16769 multiletter control sequences out of 15000+600000
- 45559 words of font info for 66 fonts, out of 8000000 for 9000
+ 13641 strings out of 493013
+ 186557 string characters out of 6139317
+ 290024 words of memory out of 5000000
+ 16788 multiletter control sequences out of 15000+600000
+ 49567 words of font info for 81 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 37i,12n,62p,851b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,12n,49p,851b,461s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy5.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pf
+ts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrb8a.pf
 b></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-d
 ist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/
 helvetic/uhvbo8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></
 usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on shear.pdf (17 pages, 113907 bytes).
+Output written on shear.pdf (17 pages, 117305 bytes).
 PDF statistics:
- 255 PDF objects out of 1000 (max. 8388607)
- 220 compressed objects within 3 object streams
+ 258 PDF objects out of 1000 (max. 8388607)
+ 221 compressed objects within 3 object streams
  88 named destinations out of 1000 (max. 500000)
- 109 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 114 words of extra memory for PDF output out of 10000 (max. 10000000)
 
