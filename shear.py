@@ -446,7 +446,7 @@ def main(arguments=None):
     # ===== Additional Argument Checks =====
     trimfixed = colon_sep_check(args.trim_fixed, "--trim-fixed")
     args.trim_pattern_3 = (None if args.trim_pattern_3 is None
-                           else args.trim_pattern_3.split(','))
+                           else args.trim_pattern_3[0].split(','))
     trimqual = colon_sep_check(args.trim_qual, "--trim-qual")
     trimqualpad = colon_sep_check(args.trim_qual_pad, "--trim-qual-pad")
     if args.fq2 is not None:
