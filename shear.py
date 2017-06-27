@@ -675,7 +675,7 @@ def main(arguments=None):
                         read2_removed = 'lowinfo'
             if (read2_removed is not False and
                     args.filter_unpaired is True and paired_end is True):
-                if read1_removed is not False:
+                if read1_removed is False:
                     read1_removed = 'unpaired'
             # ===== Read1 trimming from 3' end =====
             if read1_removed is False:
